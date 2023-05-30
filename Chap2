@@ -19,13 +19,28 @@ pyenvはディレクトリごとに異なるバージョン(このディレク�
 //Q3. pyproject.tomlに記載されているtool.poetry.dependenciesとtool.poetry.group.dev.dependenciesにそれぞれ含まれるライブラリの違いは何でしょうか?
 tool.poetry.dependenciesにはプロジェクトの依存関係が示される。
 
+tool.poetry.dependencies -> 暗黙的な main のグループ
+tool.poetry.group.dev.dependencies -> 依存パッケージをグループ化したもの
 
-Q4. poetry.lockファイルはgitで管理すべきでしょうか？しないべきでしょうか？
+https://ts223.hatenablog.com/entry/poetry-group
+https://qiita.com/nassy20/items/fbfa851e167f2fe7eefe
+https://python-poetry.org/docs/master/managing-dependencies/
 
-Q5. poetry.lockファイルが存在せずに、pyproject.tomlのみが存在する場合に、どのような問題が起こるでしょうか？
 
-Q6. poetry.lockファイルに存在する、hashという項目はなぜ必要なのでしょうか？
+//Q4. poetry.lockファイルはgitで管理すべきでしょうか？しないべきでしょうか？
+管理すべき。mainのブランチで管理・最新状態に保ち、各開発者が最新版をpullして、開発環境を統一して作業すべき。
 
+https://qiita.com/ksato9700/items/b893cf1db83605898d8a
+
+
+//Q5. poetry.lockファイルが存在せずに、pyproject.tomlのみが存在する場合に、どのような問題が起こるでしょうか？
+開発者ごとに開発環境(pythonのバージョン)が異なる状態で作業してしまう可能性が生じる。
+
+poetry.lockには、いま仮想環境にインストールされているパッケージのリストとそのバージョンが書いてある。pyproject.tomlで指定されているものだけでなく、それらが依存しているパッケージも含まれる。poetry.lockがある場合には、poetry installはそちらを先に見に行く。したがって、例えば pyproject.tomlに^2.26.0と書いてあって、poetry.lockに version="2.27.0"と書いてあれば、2.27.0がインストールされる。チーム開発している場合は、poetry.lockをバージョン管理化に置き、リポジトリにコミットすれば、チームメンバー全員が同じバージョンのパッケージを使って開発をすることが出来る。
+
+
+//Q6. poetry.lockファイルに存在する、hashという項目はなぜ必要なのでしょうか？
+改善されていないか確認している・・・？わからん・・・
 
 
 
