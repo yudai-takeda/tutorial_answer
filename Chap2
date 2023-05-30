@@ -1,1 +1,33 @@
+//Checkpoint1
+
+
+//Q1. pyenvとpoetryを使用して、python3.11を使用したプロジェクトを作ってみましょう！
+pyenv install 3.11.0
+pyenv global 3.11.0
+mkdir hoge_pj
+cd hoge_pj
+poetry init
+内容色々と記載。
+poetry env use 3.11.0
+
+
+//Q2. なぜpyenvのような仮想環境ツールが必要なのでしょうか？
+pipではライブラリ全体が同じバージョン(例えばpython3.11.0)になる。
+pyenvはディレクトリごとに異なるバージョン(このディレクトリではpython3.2.1、こっちはpython3.11.0、など)を設定できる。
+
+
+//Q3. pyproject.tomlに記載されているtool.poetry.dependenciesとtool.poetry.group.dev.dependenciesにそれぞれ含まれるライブラリの違いは何でしょうか?
+tool.poetry.dependenciesにはプロジェクトの依存関係が示される。
+
+
+Q4. poetry.lockファイルはgitで管理すべきでしょうか？しないべきでしょうか？
+
+Q5. poetry.lockファイルが存在せずに、pyproject.tomlのみが存在する場合に、どのような問題が起こるでしょうか？
+
+Q6. poetry.lockファイルに存在する、hashという項目はなぜ必要なのでしょうか？
+
+
+
+
+
 
