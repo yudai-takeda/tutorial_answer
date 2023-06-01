@@ -4,11 +4,11 @@
 ## Q1. pyenvとpoetryを使用して、python3.11を使用したプロジェクトを作ってみましょう！
 ```
 pyenv install 3.11.0
-pyenv global 3.11.0
+(pyenv global 3.11.0)
 poetry new hoge-project
 poetry install
 poetry env use 3.11.0
-poetry add hoge-package
+(poetry add hoge-package)
 ```
 
 
