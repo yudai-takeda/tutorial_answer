@@ -22,13 +22,18 @@ tool.poetry.dependenciesにはプロジェクトの依存関係が示される�
 tool.poetry.dependencies -> 暗黙的な main のグループ
 tool.poetry.group.dev.dependencies -> 依存パッケージをグループ化したもの
 
+
 https://ts223.hatenablog.com/entry/poetry-group
 https://qiita.com/nassy20/items/fbfa851e167f2fe7eefe
 https://python-poetry.org/docs/master/managing-dependencies/
+https://note.com/tatsuyashirakawa/n/nb3a6fb881e94
 
 
 //Q4. poetry.lockファイルはgitで管理すべきでしょうか？しないべきでしょうか？
 管理すべき。mainのブランチで管理・最新状態に保ち、各開発者が最新版をpullして、開発環境を統一して作業すべき。
+
+・pyproject.toml ・・・ 使っている Python やライブラリのバージョンを管理
+・poetry.lock ・・・ 各ライブラリの実際のバージョンや依存関係を管理
 
 https://qiita.com/ksato9700/items/b893cf1db83605898d8a
 
@@ -40,7 +45,9 @@ poetry.lockには、いま仮想環境にインストールされているパッ
 
 
 //Q6. poetry.lockファイルに存在する、hashという項目はなぜ必要なのでしょうか？
-改善されていないか確認している・・・？わからん・・・
+hashはライブラリのハッシュ値。これがあることで、poetry installの際、ライブラリを探索する時間を短く、高速にできる。
+
+https://qiita.com/ijufumi/items/367a4a0286b341e29b1b
 
 
 
