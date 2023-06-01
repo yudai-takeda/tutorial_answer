@@ -6,6 +6,7 @@
 pyenv install 3.11.0
 (pyenv global 3.11.0)
 poetry new hoge-project
+cd hoge-project
 poetry install
 poetry env use 3.11.0
 (poetry add hoge-package)
@@ -62,6 +63,9 @@ https://qiita.com/ijufumi/items/367a4a0286b341e29b1b
 
 
 ## Q1. Checkpoint1で作成したプロジェクトに、fizzbuzz.pyというファイルを作成して、以下の仕様を満たすプログラムを書いてみてください。
+
+ローカルに記載
+
 
 
 
