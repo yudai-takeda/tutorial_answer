@@ -56,3 +56,19 @@ hashはライブラリのハッシュ値。これがあることで、poetry ins
 
 https://qiita.com/ijufumi/items/367a4a0286b341e29b1b
 
+
+
+# Checkpoint2
+
+
+## Q1. Checkpoint1で作成したプロジェクトに、fizzbuzz.pyというファイルを作成して、以下の仕様を満たすプログラムを書いてみてください。
+
+
+
+
+
+
+
+
+
+
