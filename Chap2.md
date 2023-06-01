@@ -5,11 +5,10 @@
 ```
 pyenv install 3.11.0
 pyenv global 3.11.0
-mkdir hoge_pj
-cd hoge_pj
-poetry init
-内容色々と記載。
+poetry new hoge-project
+poetry install
 poetry env use 3.11.0
+poetry add hoge-package
 ```
 
 
