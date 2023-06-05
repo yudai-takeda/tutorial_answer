@@ -64,6 +64,7 @@ https://qiita.com/ijufumi/items/367a4a0286b341e29b1b
 
 ## Q1. Checkpoint1で作成したプロジェクトに、fizzbuzz.pyというファイルを作成して、以下の仕様を満たすプログラムを書いてみてください。
 
+~~~
 import sys
 x=sys.argv[1]
 
@@ -100,7 +101,7 @@ except ValueError:
     print('This is invalid input!')
 except:
     pass    
-
+~~~
 
 
 
