@@ -64,7 +64,42 @@ https://qiita.com/ijufumi/items/367a4a0286b341e29b1b
 
 ## Q1. Checkpoint1で作成したプロジェクトに、fizzbuzz.pyというファイルを作成して、以下の仕様を満たすプログラムを書いてみてください。
 
-ローカルに記載
+import sys
+x=sys.argv[1]
+
+#pattern 1
+if x.isdigit()==True:
+    n = int(x)
+    if n % 15==0:
+        print('FizzBuzz')
+    elif n % 3==0:
+        print('Fizz')
+    elif n % 5==0:
+        print('Buzz')
+    else:
+        print(x)
+else:
+    raise ValueError('This is invalid input!')
+
+
+
+#pattern 2
+x=sys.argv[1]
+try:
+    x.isdigit()==True
+    n = int(x)
+    if n % 15==0:
+        print('FizzBuzz')
+    elif n % 3==0:
+        print('Fizz')
+    elif n % 5==0:
+        print('Buzz')
+    else:
+        print(x)
+except ValueError:
+    print('This is invalid input!')
+except:
+    pass    
 
 
 
