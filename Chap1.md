@@ -16,7 +16,7 @@ git | grep 'repository'  -a > git-command.txt
 
 `source ~/.bashrc`
 
-として`.bashrc`を再読み込みする
+と打って、`.bashrc`の内容を再読み込みする。
 
 
 
