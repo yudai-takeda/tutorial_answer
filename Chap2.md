@@ -121,13 +121,13 @@ except:
 ## Q2. デッドロックになる場合はどのような場合でしょうか？
 以下のような4つのデータを含むテーブルがあったとする。
 
-➀id=1  |  name=test4  |  email=test4@jp  |  status=N
+    ➀id=1  |  name=test4  |  email=test4@jp  |  status=N
 
-➁id=2  |  name=test3  |  email=test3@jp  |  status=N
+    ➁id=2  |  name=test3  |  email=test3@jp  |  status=N
 
-➂id=3  |  name=test2  |  email=test2@jp  |  status=Y
+    ➂id=3  |  name=test2  |  email=test2@jp  |  status=Y
 
-➃id=4  |  name=test1  |  email=test1@jp  |  status=Y
+    ➃id=4  |  name=test1  |  email=test1@jp  |  status=Y
 
 次に、2つのインデックスを作成した。➀id：プライマリーキー、➁username：セカンダリインデックス
 
