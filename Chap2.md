@@ -109,6 +109,53 @@ except:
 
 
 
+# Checkpoint3
+
+
+## Q1. DBにIndexを張るメリットとデメリットとは何でしょうか？
+メリット：少ない判定回数で検索ができる。完全一致検索、前方検索、範囲検索などが高速になる。
+
+デメリット：➀容量が大きく、インデックスを増やすほど動作が重くなる。➁1つのインデックスで1つの検索しかできない。OR検索などが困難。
+
+
+## Q2. デッドロックになる場合はどのような場合でしょうか？
+以下のような4つのデータを含むテーブルがあったとする。
+
+➀id=1  |  name=test4  |  email=test4@jp  |  status=N
+
+➁id=2  |  name=test3  |  email=test3@jp  |  status=N
+
+➂id=3  |  name=test2  |  email=test2@jp  |  status=Y
+
+➃id=4  |  name=test1  |  email=test1@jp  |  status=Y
+
+次に、2つのインデックスを作成した。➀id：プライマリーキー、➁username：セカンダリインデックス
+
+ここで、以下の2つのアクションがしたい。
+
+TransactionA : idが1, 2のメールアドレスを更新
+
+TransactionB : 名称がtest3,test4且つstatusがYのものを更新用で抽出（抽出の結果は0行）
+
+TransactionAの実行時、➀id=1のプライマリーインデックスにロック。➁id=2のプライマリーインデックスにロック。
+
+TransactionBの実行時、➀セカンダリインデックスusername_indexにて、test3のものにロック。➁test3がid=2のため、さらに、id=2のプライマリーインデックスにロック。➂セカンダリインデックスusername_indexにて、test4のものにロック。➃test4がid=1のため、さらに、id=1プライマリーインデックスにロック。 ※statusにインデックスを張っていないため、YとNを無視して全部ロックしてしまう。（今回のDeadLock原因はここ）
+
+TransactionAとTransactionBが同時に実行されている場合、
+
+A➀が完了　　　　→ Aがid=1のプライマリーインデックスをロックしている
+
+B➀, ➁が完了　　→ Bがusername=test3のセカンダリーインデックス、id=2のプライマリーインデックスをロックしている
+
+A➁を実行　　　　→ id=2がBによってロックされているため、ロック待ち状態になる
+
+B➃を実行　　　　→ id=1がAによってロックされているため、ロック待ち状態になる
+
+となり、DeadLockが発生。
+
+
+https://engineering.cocone.io/2022/12/02/mysqlinnodb_index_deadlock/
+
 
 
 
