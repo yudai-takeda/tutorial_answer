@@ -160,7 +160,16 @@ https://engineering.cocone.io/2022/12/02/mysqlinnodb_index_deadlock/
 
 
 
+## Q3. N+1問題とは何でしょうか？
+・N件のデータ行を持つテーブルをごそっと読みだすのに1回
 
+・別のテーブルから、先述のテーブルの各行に紐づくデータを（1件ずつ）読み出すのに計N回
+
+合計でN+1回のクエリを実行している状態。Nが大きいと処理に時間がかかる。
+
+
+
+https://qiita.com/muroya2355/items/d4eecbe722a8ddb2568b
 
 
 
