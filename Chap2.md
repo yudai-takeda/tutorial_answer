@@ -26,7 +26,7 @@ pyproject.tomlにはインストールすべきパッケージたち（例えば
 
 tool.poetry.dependenciesには、サーバを動かす際に必要なパッケージが記録されている（箇条書きみたいに上から順番に記載されている）。
 
-tool.poetry.group.dev.dependenciesには、開発者が開発を行う際に必要なパッケージが記録されている。
+tool.poetry.group.dev.dependenciesには、開発者が開発を行う際に必要なパッケージが記録されている（tool.poetry.dependenciesと同様、箇条書きみたいに記載されている）。
 
 つまり、サーバを動かす際（サービスを開始する際）には、サーバにはtool.poetry.dependenciesさえインストールすればよい。サーバにtool.poetry.group.dev.dependenciesをインストールしても使わないし重くなるので、tool.poetry.group.dev.dependenciesはインストールしない。
 
