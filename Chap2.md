@@ -18,8 +18,12 @@ pipではライブラリ全体が同じバージョン(例えばpython3.11.0)に
 
 pyenvはディレクトリごとに異なるバージョン(このディレクトリではpython3.2.1、こっちはpython3.11.0、など)を設定できる。
 
+また、pyenvを使うことで、各エンジニアが開発環境を統一できる。「このプロジェクトはpython3.11.0！」と決められている際に、各エンジニアは自身のローカルPC（のプロジェクトのディレクトリ）でpython3.11.0をインストールして使用できる。
+
 
 ## Q3. pyproject.tomlに記載されているtool.poetry.dependenciesとtool.poetry.group.dev.dependenciesにそれぞれ含まれるライブラリの違いは何でしょうか?
+pyproject.tomlにはインストールすべきパッケージたちが記録されている。
+
 tool.poetry.dependenciesにはプロジェクトの依存関係が示される。
 
 tool.poetry.dependencies -> 暗黙的な main のグループの依存関係を示す。
