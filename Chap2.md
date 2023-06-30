@@ -14,7 +14,7 @@ poetry env use 3.11.0
 
 
 ## Q2. なぜpyenvのような仮想環境ツールが必要なのでしょうか？
-pipではライブラリ全体が同じバージョン(例えばpython3.11.0)になる。
+pipはpythonのパッケージを管理するツール。pipではライブラリ全体が同じバージョン(例えばpython3.11.0)になる。まとめてガッとインストールするツール、開発ではあまり使わない方がよい。
 
 pyenvはディレクトリごとに異なるバージョン(このディレクトリではpython3.2.1、こっちはpython3.11.0、など)を設定できる。
 
@@ -22,13 +22,19 @@ pyenvはディレクトリごとに異なるバージョン(このディレク�
 
 
 ## Q3. pyproject.tomlに記載されているtool.poetry.dependenciesとtool.poetry.group.dev.dependenciesにそれぞれ含まれるライブラリの違いは何でしょうか?
-pyproject.tomlにはインストールすべきパッケージたちが記録されている。
+pyproject.tomlにはインストールすべきパッケージたち（例えばpython3.11.0とか）が記録されている。
 
-tool.poetry.dependenciesにはプロジェクトの依存関係が示される。
+tool.poetry.dependenciesには、サーバを動かす際に必要なパッケージが記録されている（箇条書きみたいに上から順番に記載されている）。
 
-tool.poetry.dependencies -> 暗黙的な main のグループの依存関係を示す。
+tool.poetry.group.dev.dependenciesには、開発者が開発を行う際に必要なパッケージが記録されている。
 
-tool.poetry.group.dev.dependencies -> 依存パッケージをグループ化したもの。devというグループにおける依存関係を示す。おそらく`poetry install --with dev`とか書くと、devに記載されたパッケージを選択的にインストールしたpython環境が構築される。
+つまり、サーバを動かす際（サービスを開始する際）には、サーバにはtool.poetry.dependenciesさえインストールすればよい。サーバにtool.poetry.group.dev.dependenciesをインストールしても使わないし重くなるので、tool.poetry.group.dev.dependenciesはインストールしない。
+
+一方で、開発者が開発を行う際は、プロジェクトの内容をローカルPCにプルした上で、tool.poetry.dependenciesとtool.poetry.group.dev.dependenciesそれぞれに書かれたパッケージたちを全てインストールし、開発環境を構築すればよい。
+
+`poetry add hoge-package1.23.4`とすれば、自動でpyproject.tomlの中のtool.poetry.dependenciesに`hoge-package1.23.4`が追加される。開発用にパッケージを使う（サーバを動かす際には使用されないパッケージを開発用に使用する）場合は、`poetry add --dev hoge-package1.23.4`とすることで、tool.poetry.group.dev.dependenciesに`hoge-package1.23.4`を追加できる。
+
+また、`poetry install`とすれば、pyproject.tomlに記載されたパッケージが全てインストールされ、環境構築ができる（便利！）。もちろん、「tool.poetry.group.dev.dependenciesはインストールせずにtool.poetry.dependenciesのみをインストールする」みたいなコマンドも存在する（はず）。
 
 
 https://ts223.hatenablog.com/entry/poetry-group
@@ -41,27 +47,34 @@ https://note.com/tatsuyashirakawa/n/nb3a6fb881e94
 
 
 ## Q4. poetry.lockファイルはgitで管理すべきでしょうか？しないべきでしょうか？
-管理すべき。mainのブランチで管理・最新状態に保ち、各開発者が最新版をpullして、開発環境を統一して作業すべき。なお、githubのpoetry.lockは（基本的に）コミットされないようにしておくべき。
+管理すべき。各開発者の開発環境を完全に統一するために必要。
 
-・pyproject.toml ・・・ 使っている Python やライブラリのバージョンを管理
+・pyproject.toml ・・・ Q3で述べた通り、使っているパッケージを管理。箇条書きみたいに書かれていて、人間が読みやすい。
 
-・poetry.lock ・・・ 各ライブラリの実際のバージョンや依存関係を管理
+・poetry.lock ・・・ 各パッケージが依存するライブラリのバージョンをも管理。めちゃくちゃいっぱい書かれてて、人間が読みにくい。
+
+
+例えば、pandas1.0というパッケージを新たにインストールし、開発したいとする。pandas1.0の中にはnumpyなどのライブラリを使った式がいっぱい書かれており、pandas1.0をインストールする際、最新のnumpyであるnumpy2.0なども（自動的に）まとめてインストールされる。この時、pandas1.0はpyproject.tomlに追記され、numpy2.0などの依存ライブラリはpoetry.lockに追記される。　　　　　数日後、別の開発者がpyproject.tomlのみを参照して、pyproject.tomlに書かれたパッケージをローカルにインストールしたとする。すると当然、先ほど追記されたpandas1.0もインストールされるわけだが、この時、numpyについては指示がないので、最新のnumpyであるnumpy2.1がインストールされてしまい、プログラムが動かなくなる可能性が生じる（もしnumpyが数日の間にアップデートされていたら）。そこでpoetry.lockが役に立つ。`poetry install`と打つと、PCはまずpoetry.lockに記載された依存ライブラリであるnumpy2.0をインストールする。その次に、pyproject.tomlに記載されたpandas1.0をインストールする。これにより、開発環境を完全に統一できる。
+
+なにか新しいパッケージをインストールする際は、基本的に、pyproject.tomlもpoetry.lockも更新される。開発者は必ず、pyproject.tomlとpoetry.lockの両方をプルリクエストすべきである。環境構築を行う際、pyproject.tomlとpoetry.lockは常にセットで扱われるべきである。
+
+
 
 https://qiita.com/ksato9700/items/b893cf1db83605898d8a
 
 
 ## Q5. poetry.lockファイルが存在せずに、pyproject.tomlのみが存在する場合に、どのような問題が起こるでしょうか？
-開発者ごとに開発環境(pythonのバージョン)が異なる状態で作業してしまう可能性が生じる。
+開発者ごとに開発環境(pythonのバージョン)が異なる状態で作業してしまう可能性が生じる。Q4の回答を参照。
 
-poetry.lockには、いま仮想環境にインストールされているパッケージのリストとそのバージョンが書いてある。pyproject.tomlで指定されているものだけでなく、それらが依存しているパッケージも含まれる。poetry.lockがある場合には、poetry installはそちらを先に見に行く。したがって、例えば pyproject.tomlに`^2.26.0`と書いてあって、poetry.lockに `version="2.27.0"`と書いてあれば、`2.27.0`がインストールされる。チーム開発している場合は、poetry.lockをバージョン管理化に置き、リポジトリにコミットすれば、チームメンバー全員が同じバージョンのパッケージを使って開発をすることが出来る。
 
 
 ## Q6. poetry.lockファイルに存在する、hashという項目はなぜ必要なのでしょうか？
-hashはライブラリのハッシュ値。
+hashはパッケージやライブラリのハッシュ値。
 
-➀セキュリティ観点。ファイルが何者かに編集・改変されていないか、hash値で答え合わせする。編集されたファイルをhash関数に通すと、元のファイルとは異なるhash値が出力されるため、異変に気づける。
+➀開発環境統一の観点。例えばQ4の例を再度考えると、同じnumpy2.0であってもWindows環境とLinux環境で内容が微妙に異なることがある。使うべきnumpy2.0がLinux版であるならば、linux版numpy2.0をハッシュ関数に入力して得られたハッシュ値がpoetry.lockのnumpy2.0の項目に記載されている。　　　　ここで、別の開発者が、誤ってLinux環境ではなくWindows環境において`poetry install`してしまったとする。すると、Windows版numpy2.0がインストールされるため、先ほどとは異なるハッシュ値が出力され、そのハッシュ値がpoetry.lockに記録（更新）される。　　　開発者は、ハッシュ値が更新されていることから、「自身の開発環境が誤っているかも知れない」と気付くことができる。
 
-➁hash値があることで、poetry installの際、ライブラリを探索する時間を短く、高速にできる。
+
+➁セキュリティ観点。numpy2.0をインストールする際、正規のnumpy2.0ではなく、海賊版numpy2.0やらハッキング用numpy2.0やらが誤ってインストールされてしまう場合がある。この場合も、やはりハッシュ値がpoetry.lockにおいて更新される。　　　開発者はハッシュ値が更新されたことから、「インストールしたのは正規のnumpy2.0ではないかも知れない」と気付くことができる。
 
 https://qiita.com/ijufumi/items/367a4a0286b341e29b1b
 
@@ -77,7 +90,7 @@ import sys
 x=sys.argv[1]
 
 #pattern 1
-if x.isdigit()==True:
+if x.isdigit():       #if x.isdigit()==True:   はpythonでは推奨されない書き方。一応、意味は同じだけれども。
     n = int(x)
     if n % 15==0:
         print('FizzBuzz')
@@ -95,7 +108,7 @@ else:
 #pattern 2
 x=sys.argv[1]
 try:
-    x.isdigit()==True
+    x.isdigit()
     n = int(x)
     if n % 15==0:
         print('FizzBuzz')
@@ -201,7 +214,8 @@ API：Application Programing Interface(プログラムの情報をやり取り�
 https://tech.012grp.co.jp/entry/rest_api_basics
 
 
-#### ●エンドポイント：ネットワークの末端に接続された端末やコンピュータなどのこと。　　（"エッジデバイス"とほぼ同義かな）
+#### ●エンドポイント：ローカルからサーバにアクセスする時のアクセス先のこと。
+例えばFastAPIで`@app.get("/items/")`とか書くけど、この`/items/`の部分のこと。
 
 
 #### ●URI：URLとURNの総称
@@ -296,7 +310,7 @@ HTTPリクエストメッセージは、3つのパートで構成されるテキ
 
 ➀リクエストラインには、リクエストメソッド、リクエストURL、HTTPのバージョンの3つが、1行で記載される。
 
-➁リクエストヘッダには、クライアントからサーバにおくるリクエスト内容の詳細が記載される。`Host: foo.jp`のように記述。`Host`はヘッダー名、`foo.jp`は値である。HTTP/1.1で定義されるヘッダーだけで40種類近く存在し、拡張ヘッダーも含めるとさらに多い。ただし、リクエストヘッダに記載されていなくてはならない必須のヘッダーは`Host:`のみであり、それ以外はオプションである。オプションは`Host:`の行の下に1行ずつ追記される。なお、`Host: foo.jp`はリクエストが送信される先のサーバのホスト名（とポート番号：未指定の場合もある）を指定している。
+➁リクエストヘッダには、クライアントからサーバにおくるリクエスト内容の詳細が記載される。`Host: foo.jp`のように記述。`Host`はヘッダー名、`foo.jp`は値である。HTTP/1.1で定義されるヘッダーだけで40種類近く存在し、拡張ヘッダーも含めるとさらに多い。ただし、リクエストヘッダに記載されていなくてはならない必須のヘッダーは`Host:`のみであり、それ以外はオプションである（といっても、実際のサービスではオプションが何行もいっぱい書かれてたりする）。なお、`Host: foo.jp`はリクエストが送信される先のサーバのホスト名（とポート番号：未指定の場合もある）を指定している。
 
 ➂リクエストボディは省略可能である。例えばGETメソッドの場合は、通常リクエストボディは不要である。一方、例えばPOSTメソッドの場合には、サーバに送信するデータをエンコードしたものをボディに記載する。
 
