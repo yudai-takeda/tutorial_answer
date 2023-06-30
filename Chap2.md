@@ -24,15 +24,15 @@ pyenvはディレクトリごとに異なるバージョン(このディレク�
 ## Q3. pyproject.tomlに記載されているtool.poetry.dependenciesとtool.poetry.group.dev.dependenciesにそれぞれ含まれるライブラリの違いは何でしょうか?
 pyproject.tomlにはインストールすべきパッケージたち（例えばpython3.11.0とか）が記録されている。
 
-tool.poetry.dependenciesには、サーバを動かす際に必要なパッケージが記録されている（箇条書きみたいに上から順番に記載されている）。
+tool.poetry.dependenciesの項目には、サーバを動かす際に必要なパッケージが記録されている（箇条書きみたいに上から順番に記載されている）。
 
-tool.poetry.group.dev.dependenciesには、開発者が開発を行う際に必要なパッケージが記録されている（tool.poetry.dependenciesと同様、箇条書きみたいに記載されている）。
+tool.poetry.group.dev.dependenciesの項目には、開発者が開発を行う際に必要なパッケージが記録されている（tool.poetry.dependenciesと同様、箇条書きみたいに記載されている）。
 
-つまり、サーバを動かす際（サービスを開始する際）には、サーバにはtool.poetry.dependenciesさえインストールすればよい。サーバにtool.poetry.group.dev.dependenciesをインストールしても使わないし重くなるので、tool.poetry.group.dev.dependenciesはインストールしない。
+つまり、サーバを動かす際（サービスを開始する際）には、サーバにはtool.poetry.dependenciesに記録されたパッケージさえインストールすればよい。サーバにtool.poetry.group.dev.dependenciesに書かれたパッケージをインストールしても使わないし動作が重くなるので、tool.poetry.group.dev.dependenciesの内容はインストールしない。
 
 一方で、開発者が開発を行う際は、プロジェクトの内容をローカルPCにプルした上で、tool.poetry.dependenciesとtool.poetry.group.dev.dependenciesそれぞれに書かれたパッケージたちを全てインストールし、開発環境を構築すればよい。
 
-`poetry add hoge-package1.23.4`とすれば、自動でpyproject.tomlの中のtool.poetry.dependenciesに`hoge-package1.23.4`が追加される。開発用にパッケージを使う（サーバを動かす際には使用されないパッケージを開発用に使用する）場合は、`poetry add --dev hoge-package1.23.4`とすることで、tool.poetry.group.dev.dependenciesに`hoge-package1.23.4`を追加できる。
+`poetry add hoge-package1.23.4`とすれば、自動でpyproject.tomlの中のtool.poetry.dependenciesの項目に`hoge-package1.23.4`が追加される。開発用にパッケージを使う（サーバを動かす際には使用されないパッケージを、開発のために使用する）場合は、`poetry add --dev hoge-package1.23.4`とすることで、tool.poetry.group.dev.dependenciesの項目に`hoge-package1.23.4`を追加できる。
 
 また、`poetry install`とすれば、pyproject.tomlに記載されたパッケージが全てインストールされ、環境構築ができる（便利！）。もちろん、「tool.poetry.group.dev.dependenciesはインストールせずにtool.poetry.dependenciesのみをインストールする」みたいなコマンドも存在する（はず）。
 
