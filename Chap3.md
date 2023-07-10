@@ -2,3 +2,7 @@ Voltaとは、Node.js、npm、およびYarnのバージョン管理をシンプ�
 
 # Checkpoint
 
+## Q1. async, await, Promiseについて説明してください。
+
+async：
+
