@@ -4,7 +4,25 @@ Voltaとは、Node.js、npm、およびYarnのバージョン管理をシンプ�
 
 ## Q1. async, await, Promiseについて説明してください。
 
-async：
+「async / await」は、Promiseによる非同期処理をより簡潔に効率よく記述できる。
+
+### async：関数がpromiseを返すようにする。
+
+### await：Promise処理の結果が返ってくるまで一時停止させる。awaitはasyncで定義された関数の中だけでしか使えない。
+
+```
+<script>
+async function myDisplay() {      //myDisplay()がpromiseを返すようになる。
+  let myPromise = new Promise(function(resolve, reject) {
+    resolve("I love You !!");
+  });
+  document.getElementById("demo").innerHTML = await myPromise;      //myPromiseの完了を待って実行される。
+}
+
+myDisplay();
+</script>
+```
+
 
 ### Promise：非同期処理の完了もしくは失敗の結果を表すオブジェクト。
 Promiseの状態は以下の3種類で、最終的には②か③のどちらかで終了となる。
