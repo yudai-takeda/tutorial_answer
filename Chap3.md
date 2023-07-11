@@ -41,3 +41,10 @@ https://qiita.com/cheez921/items/41b744e4e002b966391a
 
 
 
+## Q2. TypeScriptにおける、ジェネリクスとはどういうものでしょうか？
+
+
+
+
+
+
