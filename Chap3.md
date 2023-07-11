@@ -12,11 +12,11 @@ Voltaとは、Node.js、npm、およびYarnのバージョン管理をシンプ�
 
 ```
 <script>
-async function myDisplay() {      //myDisplay()がpromiseを返すようになる。
-  let myPromise = new Promise(function(resolve, reject) {
-    resolve("I love You !!");
+async function myDisplay() {          //myDisplay()がpromiseを返すようになる。
+  let myPromise = new Promise(function(resolve) {
+    setTimeout(function() {resolve("I love You !!");}, 3000);
   });
-  document.getElementById("demo").innerHTML = await myPromise;      //myPromiseの完了を待って実行される。
+  document.getElementById("demo").innerHTML = await myPromise;            //myPromiseの完了を待って実行される。
 }
 
 myDisplay();
